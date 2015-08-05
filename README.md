@@ -5,8 +5,10 @@ Simple bash script to optimize images on pantheon systems
 
 ### jpegtran
 
-The existence of jpegtran on your local system, which is a command found in the libjpeg library, 
-a library that comes bundled with ImageMagick. If you’ve installed imagemagick for some other reason, 
+This script relies on `jpegtran` to be installed and present in the `$PATH` of your local system. 
+jpegtran is a command found in the [libjpeg](http://libjpeg.sourceforge.net/) library, 
+which comes bundled with [ImageMagick](http://www.imagemagick.org/). 
+If you’ve installed imagemagick for some other reason, 
 you’ve already got jpegtran installed. If not, it’s just a matter of: 
 
 **Ubuntu/Debian**
@@ -28,8 +30,9 @@ brew install imagemagick
 
 ### sshpass
 
-This script will prompt you once for your pantheon password, then sshpass will send your password on your behalf to both rsync calls.
-This is used so that you aren't prompted mutiple times for your pantheon password, so the script can just run. 
+This script will prompt you once for your pantheon password, then [sshpass](http://sourceforge.net/projects/sshpass/) 
+will broker your password to both rsync calls on your behalf.
+This is used so that you aren't prompted mutiple times for your password, so that the script can just run. 
 
 ```
 curl -O -L http://downloads.sourceforge.net/project/sshpass/sshpass/1.05/sshpass-1.05.tar.gz && tar xvzf sshpass-1.05.tar.gz
@@ -45,7 +48,7 @@ If you do not wish to install sshpass, you can just omit the following from the 
 sshpass -p "$PASSWORD"
 ```
 
-### Bonus
+## Bonus
 
 You’ll notice that I’ve wrapped this functionality into a bash function, and then just call the 
 function immediately after declaration. This is for fun things like sourcing into your ~/.bash_profile. 
