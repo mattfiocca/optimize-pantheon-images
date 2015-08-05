@@ -49,7 +49,6 @@ function optimize_pantheon_images() {
 	rsync --partial -rlvz --size-only --ipv4 --progress -e 'ssh -p 2222' $ENV.$SITE@appserver.$ENV.$SITE.drush.in:files/* ./files/
 	if [ "$?" = "0" ] ; then
 		echo "Download completed"
-		exit
 	else
 		echo "Download failure. Backing off and retrying..."
 		sleep 180
@@ -67,7 +66,6 @@ function optimize_pantheon_images() {
 	rsync --partial -rlvz --size-only --ipv4 --progress -e 'ssh -p 2222' . --temp-dir=../tmp/ $ENV.$SITE@appserver.$ENV.$SITE.drush.in:files/.
 	if [ "$?" = "0" ] ; then
 		echo "Upload completed"
-		exit
 	else
 		echo "Upload failure. Backing off and retrying..."
 		sleep 180
