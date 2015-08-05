@@ -30,8 +30,9 @@ brew install imagemagick
 
 ### sshpass
 
-This script will prompt you once for your pantheon password, then [sshpass](http://sourceforge.net/projects/sshpass/) 
-will broker your password to both rsync calls on your behalf.
+There are two flavors of this script available. `optimize_pantheon_images` and `optimize_pantheon_images_sshpass`. 
+The [sshpass](http://sourceforge.net/projects/sshpass/) flavor will prompt you once for your pantheon password, 
+then brokers it to both rsync calls on your behalf.
 This is used so that you aren't prompted mutiple times for your password, so that the script can just run. 
 
 ```
@@ -42,11 +43,25 @@ sudo make install
 sshpass -V
 ```
 
-If you do not wish to install sshpass, you can just omit the following from the beginning of the rsync calls:
+## What this script is doing
 
-```
-sshpass -p "$PASSWORD"
-```
+1. First checks to see if you have jpegtran (and sshpass if using that flavor), aborts otherwise.
+
+2. Prompts you for the absolute or relative path to your local /files directory. This directory can be anywhere actually, and you don’t have to be `cd`’d into the project or anything like that. This is just what you want the working directory to be on your local system. The script checks to make sure the path actually exists, aborts otherwise.
+
+3. Prompts you for the pantheon site uuid. This is that long uuid found in your pantheon dash, i.e. XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+
+4. If you are using sshpass, prompts for your pantheon password
+
+5. The script then remembers where you were in your terminal and moves into your working directory, and starts downloading (via rsync) the entire /files directory of the remote site recursively. This probably goes without saying, but your local disk needs to have enough available space to support all your site files.
+
+6. Then it builds a list of all .jpg and .jpeg images recursively and case-insensitively (.jpg or .JPG) through the entire working directory. 
+
+7. Optimizes images. jpegtran offers two ways to optimize images; with either the `-optimize` flag or the `-progressive` flag. We’ve chosen `-progressive` in this script because its the method of optimization we prefer for web images, where images can be loaded almost instantly to the browser and then progressively download in sort of an async fashion. An additional flag we’re using in this script is the `-copy none` setting. This strips the image of all meta information, adding another layer of file size reduction.
+
+8. After optimization, the images are then uploaded (again via rsync) back to the server recursively. 
+
+9. When it’s all said and done, this script will `cd` you back to the directory that you came from before running the script.
 
 ## Bonus
 

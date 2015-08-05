@@ -23,6 +23,9 @@ function optimize_pantheon_images() {
 	# checks for the presence of jpegtran, which we use for image optimization
 	command -v jpegtran >/dev/null 2>&1 || { echo >&2 "I require jpegtran but it's not installed. Aborting."; exit 1; }
 
+	# checks for the presence of jpegtran, which we use for image optimization
+	command -v sshpass >/dev/null 2>&1 || { echo >&2 "I require sshpass but it's not installed. Aborting."; exit 1; }
+
 	# checks to make sure the desired working directory exists
 	read -p "Local Files Root Directory (./files): " DIR
 	if [ ! -d $DIR ]; then
@@ -38,6 +41,9 @@ function optimize_pantheon_images() {
 	read -p "Pantheon Site ID (XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX): " PANTHEON_UUID
 	export SITE=$PANTHEON_UUID
 
+	# ask for the pantheon password
+	read -sp "Pantheon Password: " PASSWORD
+
 	# remember where we started off so we can return later
 	# cd into working directoy
 	echo "Changing to $DIR"
@@ -46,7 +52,7 @@ function optimize_pantheon_images() {
 
 	# download files
 	echo "Downloading Files"
-	rsync --partial -rlvz --size-only --ipv4 --progress -e 'ssh -p 2222' $ENV.$SITE@appserver.$ENV.$SITE.drush.in:files/* ./files/
+	sshpass -p "$PASSWORD" rsync --partial -rlvz --size-only --ipv4 --progress -e 'ssh -p 2222' $ENV.$SITE@appserver.$ENV.$SITE.drush.in:files/* ./files/
 	if [ "$?" = "0" ] ; then
 		echo "Download completed"
 		exit
@@ -64,7 +70,7 @@ function optimize_pantheon_images() {
 
 	# upload files
 	echo "Uploading Files"
-	rsync --partial -rlvz --size-only --ipv4 --progress -e 'ssh -p 2222' . --temp-dir=../tmp/ $ENV.$SITE@appserver.$ENV.$SITE.drush.in:files/.
+	sshpass -p "$PASSWORD" rsync --partial -rlvz --size-only --ipv4 --progress -e 'ssh -p 2222' . --temp-dir=../tmp/ $ENV.$SITE@appserver.$ENV.$SITE.drush.in:files/.
 	if [ "$?" = "0" ] ; then
 		echo "Upload completed"
 		exit
