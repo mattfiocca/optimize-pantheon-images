@@ -77,3 +77,7 @@ Then add this to end of `~/.bash_profile`:
 
 Don’t forget the period at the beginning. Save and close, then start a new terminal session. Now, you can call optimize_pantheon_jpgs 
 directly on the terminal from anywhere and it will return you back to where you were terminal’ed into previous to the call.
+
+## Future Plans
+
+1. Add PNG optimizations
