@@ -68,15 +68,15 @@ sshpass -V
 You’ll notice that I’ve wrapped this functionality into a bash function, and then just call the 
 function immediately after declaration. This is for fun things like sourcing into your ~/.bash_profile. 
 
-For example, remove the function call at the end of this script and save the script to `~/optimize_pantheon_jpgs.sh`. 
+For example, remove the function call at the end of this script and save the script to `~/optimize_pantheon_images.sh`. 
 Then add this to end of `~/.bash_profile`:
 
 ```
-. ~/optimize_pantheon_jpgs.sh
+. ~/optimize_pantheon_images.sh
 ```
 
-Don’t forget the period at the beginning. Save and close, then start a new terminal session. Now, you can call optimize_pantheon_jpgs 
-directly on the terminal from anywhere and it will return you back to where you were terminal’ed into previous to the call.
+Don’t forget the period at the beginning. Save and close, then start a new terminal session. Now, you can just call `optimize_pantheon_images`
+anywhere on the terminal and it will return you back to where you were prior to the call.
 
 ## Future Plans
 
