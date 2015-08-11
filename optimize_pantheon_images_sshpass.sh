@@ -52,7 +52,7 @@ function optimize_pantheon_images() {
 
 	# download files
 	echo "Downloading Files"
-	sshpass -p "$PASSWORD" rsync --partial -rlvz --size-only --ipv4 --progress -e 'ssh -p 2222' $ENV.$SITE@appserver.$ENV.$SITE.drush.in:files/* ./files/
+	sshpass -p "$PASSWORD" rsync --partial -rlvz --size-only --ipv4 --progress -e "ssh -p 2222 -o StrictHostKeyChecking=no" $ENV.$SITE@appserver.$ENV.$SITE.drush.in:files/* ./files/
 	if [ "$?" = "0" ] ; then
 		echo "Download completed"
 	else
@@ -69,7 +69,7 @@ function optimize_pantheon_images() {
 
 	# upload files
 	echo "Uploading Files"
-	sshpass -p "$PASSWORD" rsync --partial -rlvz --size-only --ipv4 --progress -e 'ssh -p 2222' . --temp-dir=../tmp/ $ENV.$SITE@appserver.$ENV.$SITE.drush.in:files/.
+	sshpass -p "$PASSWORD" rsync --partial -rlvz --size-only --ipv4 --progress -e "ssh -p 2222 -o StrictHostKeyChecking=no" . --temp-dir=../tmp/ $ENV.$SITE@appserver.$ENV.$SITE.drush.in:files/.
 	if [ "$?" = "0" ] ; then
 		echo "Upload completed"
 	else
